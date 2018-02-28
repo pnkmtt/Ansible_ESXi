@@ -1,0 +1,4 @@
+[web-vm]
+web01 disk='1' datastore='datastore1' network='VM_Network' memory='100' cpucount='1' osid='ubuntu64Guest' validate_certs='False' 
+
+

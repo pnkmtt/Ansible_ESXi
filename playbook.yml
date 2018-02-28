@@ -1,0 +1,55 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  user: remote
+  become: true
+  vars_prompt:
+
+  vars_prompt:
+    - name: "vcenter_hostname"
+      prompt: "Enter vcenter hostname"
+      private: no
+      default: "172.28.128.3"
+    - name: "vcenter_user"
+      prompt: "Enter vcenter username"
+      private: no
+      default: "root"
+    - name: "vcenter_pass"
+      prompt: "Enter vcenter password"
+      private: yes
+      default: "timeison" 
+
+  vars:
+    datacenter: 'ha-datacenter'
+    esxi_host: '172.28.128.3'
+    notes: 'Created by Ansible'
+
+  tasks:
+      - vsphere_guest:
+          vcenter_hostname: "{{ vcenter_hostname }}"
+          username: "{{ vcenter_user }}"
+          password: "{{ vcenter_pass }}"
+          guest: "{{ inventory_hostname }}"
+          state: 'present'
+          validate_certs: False
+          vm_extra_config:
+            notes: "{{ notes }}"
+          vm_disk:
+            disk1:
+              size_gb: "{{ disk }}"
+              type: thin
+              datastore: "{{ datastore }}"
+          vm_nic:
+            nic1:
+              type: vmxnet3
+              network: "{{ network }}"
+              network_type: standard
+          vm_hardware:
+            memory_mb: "{{ memory }}"
+            num_cpus: "{{ cpucount }}"
+            osid: "{{ osid }}"
+            scsi: paravirtual
+#          esxi:
+ #           datacenter: "{{ datacenter }}"
+  #          hostname: "{{ esxi_host }}"
